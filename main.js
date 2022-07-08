@@ -77,24 +77,15 @@ video.addEventListener('click', togglePlay);
 playPause.addEventListener('click', togglePlay);
 playBtn.addEventListener('click', togglePlay);
 
+
 function updateVolumeRange() {
     var x = volumeRange.value;
-    var color = 'linear-gradient(to right,rgb(189, 174, 130)' + x + '%, rgb(189, 174, 130)' + x + '%, rgb(200, 200, 200)' +x + '%, rgb(200, 200, 200)' + x + '%)';
+    var color = 'linear-gradient(to right,rgb(189, 174, 130)' + x +'%, rgb(200, 200, 200)' + x + '%)';
     volumeRange.style.background = color;
 }
 
 volumeRange.addEventListener('mousemove', updateVolumeRange);
 volumeRange.addEventListener('click', updateVolumeRange);
-
-function updateProgressRange() {
-var x = progress.value;
-var color = 'linear-gradient(to right,rgb(189, 174, 130)' + x + '%, rgb(189, 174, 130)' + x + '%, rgb(200, 200, 200)' + x + '%, rgb(200, 200, 200)' + x + '%)';
-progress.style.background = color;
-}
-
-progress.addEventListener('mousemove', updateProgressRange);
-progress.addEventListener('click', updateProgressRange);
-video.addEventListener('timeupdate', updateProgressRange);
 
 function updateVolume() {
     video.volume = volumeRange.value / 100;
@@ -108,12 +99,6 @@ function updateVolume() {
 volumeRange.addEventListener('change', updateVolume);
 
 
-function updateProgress() {
-    progress.value = (video.currentTime / video.duration) * 100;
-}
-
-video.addEventListener('timeupdate', updateProgress);
-
 volumeMute.addEventListener('click', function(e) {
     if (video.muted == false) {
         video.muted = true;
@@ -124,9 +109,21 @@ volumeMute.addEventListener('click', function(e) {
     }
 });
 
-progress.addEventListener('change', function() {
-    video.currentTime = this.value;
-    video.duration = progress.getAttribute("max");
+function updateProgress() {
+    progress.value = (video.currentTime) / (video.duration) * 100;
+    const x = progress.value;
+    const color = 'linear-gradient(to right,rgb(189, 174, 130)' + x + '%, rgb(200, 200, 200)' + x + '%)';
+    progress.style.background = color;
+}
+progress.addEventListener('mousemove', updateProgress);
+progress.addEventListener('click', updateProgress);
+video.addEventListener('timeupdate', updateProgress);
+
+progress.addEventListener('click', function(e) {
+    const width = this.clientWidth;
+    const clickX = e.offsetX;
+    const duration = video.duration;
+    video.currentTime = (clickX / width) * duration;
 });
 
    
